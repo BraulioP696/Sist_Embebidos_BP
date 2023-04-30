@@ -35,17 +35,19 @@ void tareaDos(void *arg){
     int i;
     for(i=0; i  <ITER; i++){
         // ESPERAMOS EL SEMAFORO 
-        rt_sem_v(&sem);
+        rt_sem_p(&sem,TM_INFINITE);
         //IMPRESION VARIABLE INCREMENTADA
         printf("Tarea 22 la variable global es: %d \n",--global);
         //LIBERAMOS SEMAFORO
-        rt_sem_p(&sem,TM_INFINITE);
+        rt_sem_v(&sem);
     }
 }
 
 int main(int argc, char* argv[]){ //ARGUMENTOS DE LA FUNCIÓN PRINCIPAL
+
     //CREACIÓN DE SEMAFORO
-    rt_sem_create(&sem, "SemaforoP3",1,S_FIFO);
+    rt_sem_create(&sem, "SemaforoP3",1,SEM_FIFO);
+
     // MENSAJE EN CASO DE ERROR CREANDO SEMAFORO
     if(sem_id < 0) {
         printf("Error creando semáforo\n");
@@ -54,8 +56,8 @@ int main(int argc, char* argv[]){ //ARGUMENTOS DE LA FUNCIÓN PRINCIPAL
     
     char str1[10]; char str2[10]; //CREAMOS EL STRING (ARREGLO DE CARACTERES)
     sprintf(str1,"task_1"); sprintf(str2,"task_2");//COLOCAMOS NOMBRE A UN STRING
-    rt_task_create(&tarea1, str1,0,1,0); //CREAMOS LA TAREA, DIRECCIÓN, NOMBRE DEL HILO, PRIORIDADES EN XENOMAI
-    rt_task_create(&tarea2, str2,0,1,0); //CREAMOS LA TAREA, DIRECCIÓN, NOMBRE DEL HILO, PRIORIDADES EN XENOMAI
+    rt_task_create(&tarea1, str1,0,10,0); //CREAMOS LA TAREA, DIRECCIÓN, NOMBRE DEL HILO, PRIORIDADES EN XENOMAI
+    rt_task_create(&tarea2, str2,0,10,0); //CREAMOS LA TAREA, DIRECCIÓN, NOMBRE DEL HILO, PRIORIDADES EN XENOMAI
     rt_task_start(&tarea1, &tareaUno,NULL); //INICIAMOS LA TAREA, DIRECCIÓN TAREA, FUNCIÓN A EJECUTAR, 0
     rt_task_start(&tarea2, &tareaDos,NULL); //INICIAMOS LA TAREA, DIRECCIÓN TAREA, FUNCIÓN A EJECUTAR, 0
 
