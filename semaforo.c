@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <unistd.h>
-
+#include <stdlib.h>
 #include <alchemy/task.h> //Libreria xenomai para generar tareas RT
 #include <alchemy/timer.h>
 #include <alchemy/sem.h>
