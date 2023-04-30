@@ -12,7 +12,7 @@ void increment_thread(void *arg) {
     for (i = 0; i < N; i++) {
         rt_sem_p(&semaphore, TM_INFINITE);
         shared_variable++;
-        printf("val: %d \n",shared_variable);
+        printf("val1: %d \n",shared_variable);
         rt_sem_v(&semaphore);
     }
 }
@@ -22,7 +22,7 @@ void decrement_thread(void *arg) {
     for (i = 0; i < N; i++) {
         rt_sem_p(&semaphore, TM_INFINITE);
         shared_variable--;
-        printf("val: %d \n",shared_variable);
+        printf("val2: %d \n",shared_variable);
         rt_sem_v(&semaphore);
     }
 }
