@@ -7,11 +7,12 @@
 #include <alchemy/sem.h>
 
 //DEFINIMOS EL NUMERO DE ITERACIONES POR TAREA
-#define ITER 10
+#define ITER 100000
 
 //DEFINIMOS LAS TAREAS
 static RT_TASK tarea1;
 static RT_TASK tarea2;
+
 
 int global = 0; //RECURSO COMPARTIDO
 
@@ -30,6 +31,7 @@ void tareaUno(void *arg){
         rt_sem_v(&semaforo);
     }
 }
+
 
 void tareaDos(void *arg){
     int i;
