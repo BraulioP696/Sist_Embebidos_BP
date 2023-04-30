@@ -21,12 +21,12 @@ int sem_id;
 void tareaUno(void *arg){
     int i;
     for(i=0; i <ITER; i++){
-        // ESPERAMOS EL SEMAFORO 
-        rt_sem_v(&sem);
+        // ESPERAMOS EL SEMAFORO
+        rt_sem_p(&sem, TM_INFINITE); 
         //IMPRESION VARIABLE INCREMENTADA
         printf("Tarea 11 la variable global es: %d \n",++global);
         //LIBERAMOS SEMAFORO
-        rt_sem_p(&sem, TM_INFINITE);
+        rt_sem_v(&sem);
     }
 }
 
@@ -54,10 +54,14 @@ int main(int argc, char* argv[]){ //ARGUMENTOS DE LA FUNCIÓN PRINCIPAL
     
     char str1[10]; char str2[10]; //CREAMOS EL STRING (ARREGLO DE CARACTERES)
     sprintf(str1,"task_1"); sprintf(str2,"task_2");//COLOCAMOS NOMBRE A UN STRING
-    rt_task_create(&tarea1, str1,0,1,T_JOINABLE); //CREAMOS LA TAREA, DIRECCIÓN, NOMBRE DEL HILO, PRIORIDADES EN XENOMAI
-    rt_task_create(&tarea2, str2,0,1,T_JOINABLE); //CREAMOS LA TAREA, DIRECCIÓN, NOMBRE DEL HILO, PRIORIDADES EN XENOMAI
+    rt_task_create(&tarea1, str1,0,1,0); //CREAMOS LA TAREA, DIRECCIÓN, NOMBRE DEL HILO, PRIORIDADES EN XENOMAI
+    rt_task_create(&tarea2, str2,0,1,0); //CREAMOS LA TAREA, DIRECCIÓN, NOMBRE DEL HILO, PRIORIDADES EN XENOMAI
     rt_task_start(&tarea1, &tareaUno,NULL); //INICIAMOS LA TAREA, DIRECCIÓN TAREA, FUNCIÓN A EJECUTAR, 0
     rt_task_start(&tarea2, &tareaDos,NULL); //INICIAMOS LA TAREA, DIRECCIÓN TAREA, FUNCIÓN A EJECUTAR, 0
+
+    //Esperamos que las tareas finalicen 
+    rt_task_join(&tarea1);
+    rt_task_join(&tarea2);
 
     printf("El valor final es: %d \n", global);
 
