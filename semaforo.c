@@ -1,46 +1,50 @@
 #include <stdio.h>
-#include <alchemy/sem.h>
 #include <alchemy/task.h>
+#include <alchemy/sem.h>
 
-RT_SEM sem; // semáforo
-int var_compartida = 0; // variable compartida
+#define NLOOP 100
 
-void hilo_1(void *arg) {
-  int i;
-  for (i = 0; i < 10000; i++) {
-    rt_sem_p(&sem, TM_INFINITE); // bloquea el semáforo
-    var_compartida++; // incrementa la variable compartida
-    printf("val: %d \n" ,var_compartida);
-    rt_sem_v(&sem); // libera el semáforo
-  }
+int shared_var = 0;
+RT_SEM sem1, sem2;
+
+void increment(void *arg)
+{
+    int i;
+    for (i = 0; i < NLOOP; i++) {
+        rt_sem_p(&sem1, TM_INFINITE);
+        shared_var++;
+        printf("Hilo 1: %d\n", shared_var);
+        rt_sem_v(&sem2);
+    }
 }
 
-void hilo_2(void *arg) {
-  int i;
-  for (i = 0; i < 10000; i++) {
-    rt_sem_p(&sem, TM_INFINITE); // bloquea el semáforo
-    var_compartida--; // decrementa la variable compartida
-    printf("val2: %d \n" ,var_compartida);
-    rt_sem_v(&sem); // libera el semáforo
-  }
+void decrement(void *arg)
+{
+    int i;
+    for (i = 0; i < NLOOP; i++) {
+        rt_sem_p(&sem2, TM_INFINITE);
+        shared_var--;
+        printf("Hilo 2: %d\n", shared_var);
+        rt_sem_v(&sem1);
+    }
 }
 
-int main(int argc, char* argv[]) {
-  rt_sem_create(&sem, "mi_sem", 1, S_FIFO); // crea el semáforo con valor inicial 1
+int main(int argc, char *argv[])
+{
+    rt_task_create(NULL, "increment", 0, 50, 0);
+    rt_task_create(NULL, "decrement", 0, 50, 0);
 
-  RT_TASK tarea_1, tarea_2;
-  rt_task_create(&tarea_1, "hilo_1", 0, 50, T_JOINABLE);
-  rt_task_create(&tarea_2, "hilo_2", 0, 50, T_JOINABLE);
+    rt_sem_create(&sem1, "sem1", 0, S_PRIO);
+    rt_sem_create(&sem2, "sem2", 1, S_PRIO);
 
-  rt_task_start(&tarea_1, &hilo_1, NULL);
-  rt_task_start(&tarea_2, &hilo_2, NULL);
+    rt_task_start(&increment, NULL);
+    rt_task_start(&decrement, NULL);
 
-  rt_task_join(&tarea_1);
-  rt_task_join(&tarea_2);
+    rt_task_join(&increment);
+    rt_task_join(&decrement);
 
-  printf("La variable compartida tiene un valor de %d\n", var_compartida);
+    rt_sem_delete(&sem1);
+    rt_sem_delete(&sem2);
 
-  rt_sem_delete(&sem); // elimina el semáforo
-
-  return 0;
+    return 0;
 }
