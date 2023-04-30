@@ -15,6 +15,7 @@ void mensaje (void *arg){
     printf("Tarea: %s \n", infoTarea.name);
 }
 
+
 int main(int argc, char* argv[]){
     char str[10];
     sprintf(str,"hola");
