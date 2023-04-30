@@ -43,6 +43,7 @@ void tareaDos(void *arg){
     }
 }
 
+
 int main(int argc, char* argv[]){ //ARGUMENTOS DE LA FUNCIÓN PRINCIPAL
     //CREACIÓN DE SEMAFORO
     rt_sem_create(&sem, "SemaforoP3",1,S_PRIO);
@@ -62,6 +63,6 @@ int main(int argc, char* argv[]){ //ARGUMENTOS DE LA FUNCIÓN PRINCIPAL
     printf("El valor final es: %d \n", global);
 
     rt_sem_delete(&sem); //ELIMINAMOS EL SEMAFORO CREADO
-    
+
     return 0;
 }
