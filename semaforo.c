@@ -10,9 +10,7 @@
 #define ITER 120
 
 //DEFINIMOS LAS TAREAS
-static RT_TASK tarea1;
-static RT_TASK tarea2;
-
+static RT_TASK tarea1, tarea2;
 
 int global = 0; //RECURSO COMPARTIDO
 
@@ -60,6 +58,8 @@ int main(int argc, char* argv[]){ //ARGUMENTOS DE LA FUNCIÓN PRINCIPAL
     rt_task_create(&tarea2, str2,0,1,0); //CREAMOS LA TAREA, DIRECCIÓN, NOMBRE DEL HILO, PRIORIDADES EN XENOMAI
     rt_task_start(&tarea1, &tareaUno,0); //INICIAMOS LA TAREA, DIRECCIÓN TAREA, FUNCIÓN A EJECUTAR, 0
     rt_task_start(&tarea2, &tareaDos,0); //INICIAMOS LA TAREA, DIRECCIÓN TAREA, FUNCIÓN A EJECUTAR, 0
+    rt_task_join(&tarea1);
+    rt_task_join(&tarea2); 
     rt_sem_delete(&sem); //ELIMINAMOS EL SEMAFORO CREADO
     return 0;
 }
