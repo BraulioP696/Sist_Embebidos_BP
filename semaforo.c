@@ -15,8 +15,8 @@ static RT_TASK tarea1, tarea2;
 int global = 0; //RECURSO COMPARTIDO
 
 //DEFINIMOS SEMAFORO
-RT_SEM sem;
-int sem_id;
+RT_SEM sem,sem2;
+int sem_id, sem_id2;
 
 void tareaUno(void *arg){
     int i;
@@ -26,7 +26,7 @@ void tareaUno(void *arg){
         //IMPRESION VARIABLE INCREMENTADA
         printf("Tarea 11 la variable global es: %d \n",++global);
         //LIBERAMOS SEMAFORO
-        rt_sem_v(&sem);
+        rt_sem_v(&sem2);
     }
 }
 
@@ -35,7 +35,7 @@ void tareaDos(void *arg){
     int i;
     for(i=0; i  <ITER; i++){
         // ESPERAMOS EL SEMAFORO 
-        rt_sem_p(&sem, TM_INFINITE);
+        rt_sem_p(&sem2, TM_INFINITE);
         //IMPRESION VARIABLE INCREMENTADA
         printf("Tarea 22 la variable global es: %d \n",--global);
         //LIBERAMOS SEMAFORO
@@ -46,6 +46,7 @@ void tareaDos(void *arg){
 int main(int argc, char* argv[]){ //ARGUMENTOS DE LA FUNCIÓN PRINCIPAL
     //CREACIÓN DE SEMAFORO
     sem_id = rt_sem_create(&sem, "SemaforoP3",1,S_PRIO);
+    sem_id2 = rt_sem_create(&sem2, "SemaforoP3",1,S_PRIO);
     // MENSAJE EN CASO DE ERROR CREANDO SEMAFORO
     if(sem_id < 0) {
         printf("Error creando semáforo\n");
