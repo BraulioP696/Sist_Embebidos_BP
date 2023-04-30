@@ -7,7 +7,7 @@
 #include <alchemy/sem.h>
 
 //DEFINIMOS EL NUMERO DE ITERACIONES POR TAREA
-#define ITER 100
+#define ITER 1000
 
 //DEFINIMOS LAS TAREAS
 static RT_TASK tarea1, tarea2;
@@ -22,7 +22,7 @@ void tareaUno(void *arg){
     int i;
     for(i=0; i <ITER; i++){
         // ESPERAMOS EL SEMAFORO 
-        rt_sem_p(&sem, TM_INFINITE);
+        rt_sem_p(&sem);
         //IMPRESION VARIABLE INCREMENTADA
         printf("Tarea 11 la variable global es: %d \n",++global);
         //LIBERAMOS SEMAFORO
@@ -35,7 +35,7 @@ void tareaDos(void *arg){
     int i;
     for(i=0; i  <ITER; i++){
         // ESPERAMOS EL SEMAFORO 
-        rt_sem_p(&sem, TM_INFINITE);
+        rt_sem_p(&sem);
         //IMPRESION VARIABLE INCREMENTADA
         printf("Tarea 22 la variable global es: %d \n",--global);
         //LIBERAMOS SEMAFORO
@@ -45,7 +45,7 @@ void tareaDos(void *arg){
 
 int main(int argc, char* argv[]){ //ARGUMENTOS DE LA FUNCIÓN PRINCIPAL
     //CREACIÓN DE SEMAFORO
-    rt_sem_create(&sem, "SemaforoP3",1,S_PRIO);
+    rt_sem_create(&sem, "SemaforoP3",1,S_FIFO);
     // MENSAJE EN CASO DE ERROR CREANDO SEMAFORO
     if(sem_id < 0) {
         printf("Error creando semáforo\n");
