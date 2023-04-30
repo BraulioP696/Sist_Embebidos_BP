@@ -31,6 +31,10 @@ void tareaUno(void *arg){
 }
 
 
+
+
+
+
 void tareaDos(void *arg){
     int i;
     for(i=0; i  <ITER; i++){
