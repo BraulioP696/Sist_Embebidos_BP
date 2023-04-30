@@ -43,7 +43,6 @@ void tareaDos(void *arg){
     }
 }
 
-
 int main(int argc, char* argv[]){ //ARGUMENTOS DE LA FUNCIÓN PRINCIPAL
     //CREACIÓN DE SEMAFORO
     rt_sem_create(&sem, "SemaforoP3",1,S_PRIO);
