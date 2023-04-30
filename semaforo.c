@@ -2,49 +2,50 @@
 #include <alchemy/task.h>
 #include <alchemy/sem.h>
 
-#define NLOOP 100
+#define NLOOP 10000
 
 int shared_var = 0;
-RT_SEM sem1, sem2;
+RT_SEM sem;
 
-void increment(void *arg)
+void inc_task(void *arg)
 {
     int i;
     for (i = 0; i < NLOOP; i++) {
-        rt_sem_p(&sem1, TM_INFINITE);
+        rt_sem_p(&sem, TM_INFINITE);
         shared_var++;
-        printf("Hilo 1: %d\n", shared_var);
-        rt_sem_v(&sem2);
+        printf("valor actual: %d \n", shared_var);
+        rt_sem_v(&sem);
     }
 }
 
-void decrement(void *arg)
+void dec_task(void *arg)
 {
     int i;
     for (i = 0; i < NLOOP; i++) {
-        rt_sem_p(&sem2, TM_INFINITE);
+        rt_sem_p(&sem, TM_INFINITE);
         shared_var--;
-        printf("Hilo 2: %d\n", shared_var);
-        rt_sem_v(&sem1);
+        printf("valor actual: %d \n", shared_var);
+        rt_sem_v(&sem);
     }
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
-    rt_task_create(NULL, "increment", 0, 50, 0);
-    rt_task_create(NULL, "decrement", 0, 50, 0);
+    rt_sem_create(&sem, "my_sem", 1, S_FIFO);
+    RT_TASK t1, t2;
 
-    rt_sem_create(&sem1, "sem1", 0, S_PRIO);
-    rt_sem_create(&sem2, "sem2", 1, S_PRIO);
+    rt_task_create(&t1, "inc_task", 0, 50, 0);
+    rt_task_create(&t2, "dec_task", 0, 50, 0);
 
-    rt_task_start(&increment, NULL);
-    rt_task_start(&decrement, NULL);
+    rt_task_start(&t1, &inc_task, 0);
+    rt_task_start(&t2, &dec_task, 0);
 
-    rt_task_join(&increment);
-    rt_task_join(&decrement);
+    rt_task_join(&t1);
+    rt_task_join(&t2);
 
-    rt_sem_delete(&sem1);
-    rt_sem_delete(&sem2);
+    rt_sem_delete(&sem);
+
+    printf("Valor final de la variable compartida: %d\n", shared_var);
 
     return 0;
 }
