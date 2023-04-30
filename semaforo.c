@@ -25,7 +25,7 @@ void tareaUno(void *arg){
         // ESPERAMOS EL SEMAFORO 
         rt_sem_p(&semaforo, TM_INFINITE);
         //IMPRESION VARIABLE INCREMENTADA
-        printf("Tarea 1 la variable global es: %d \n",++global);
+        printf("Tarea 11 la variable global es: %d \n",++global);
         //LIBERAMOS SEMAFORO
         rt_sem_v(&semaforo);
     }
@@ -37,7 +37,7 @@ void tareaDos(void *arg){
         // ESPERAMOS EL SEMAFORO 
         rt_sem_p(&semaforo, TM_INFINITE);
         //IMPRESION VARIABLE INCREMENTADA
-        printf("Tarea 2 la variable global es: %d \n",--global);
+        printf("Tarea 22 la variable global es: %d \n",--global);
         //LIBERAMOS SEMAFORO
         rt_sem_v(&semaforo);
     }
@@ -45,7 +45,7 @@ void tareaDos(void *arg){
 
 int main(int argc, char* argv[]){ //ARGUMENTOS DE LA FUNCIÓN PRINCIPAL
     //CREACIÓN DE SEMAFORO
-    sem_id = rt_sem_create(&semaforo, "SemaforoP3",1,S_FIFO);
+    sem_id = rt_sem_create(&semaforo, "SemaforoP3",1,S_PRIO);
     // MENSAJE EN CASO DE ERROR CREANDO SEMAFORO
     if(sem_id < 0) {
         printf("Error creando semáforo\n");
