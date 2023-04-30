@@ -2,48 +2,47 @@
 #include <alchemy/sem.h>
 #include <alchemy/task.h>
 
-#define N 10000
+#define MAX_COUNT 1000000
 
-int shared_variable = 0;
-RT_SEM semaphore;
+int global_var = 0;
+RT_SEM sem;
 
-void increment_thread(void *arg) {
+void task1(void *arg)
+{
     int i;
-    for (i = 0; i < N; i++) {
-        rt_sem_p(&semaphore, TM_INFINITE);
-        shared_variable++;
-        printf("val1: %d \n",shared_variable);
-        rt_sem_v(&semaphore);
+    for(i = 0; i < MAX_COUNT; i++)
+    {
+        rt_sem_p(&sem, TM_INFINITE);
+        global_var++;
+        printf("val1: %d \n",global_var);
+        rt_sem_v(&sem);
     }
 }
 
-void decrement_thread(void *arg) {
+void task2(void *arg)
+{
     int i;
-    for (i = 0; i < N; i++) {
-        rt_sem_p(&semaphore, TM_INFINITE);
-        shared_variable--;
-        printf("val2: %d \n",shared_variable);
-        rt_sem_v(&semaphore);
+    for(i = 0; i < MAX_COUNT; i++)
+    {
+        rt_sem_p(&sem, TM_INFINITE);
+        global_var--;
+        printf("val2: %d \n",global_var);
+        rt_sem_v(&sem);
     }
 }
 
-int main(int argc, char *argv[]) {
-    RT_TASK increment_task, decrement_task;
+int main(int argc, char **argv)
+{
+    rt_sem_create(&sem, "Semaphore", 1, S_FIFO);
+    
+    RT_TASK taskA, taskB;
+    rt_task_create(&taskA, "Task1", 0, 50, 0);
+    rt_task_create(&taskB, "Task2", 0, 50, 0);
+    rt_task_start(&taskA, &task1, 0);
+    rt_task_start(&taskB, &task2, 0);
+    rt_task_join(&taskA);
+    rt_task_join(&taskB);
 
-    rt_sem_create(&semaphore, "my_semaphore", 1, S_FIFO);
-
-    rt_task_create(&increment_task, "increment_task", 0, 50, T_JOINABLE);
-    rt_task_create(&decrement_task, "decrement_task", 0, 50, T_JOINABLE);
-
-    rt_task_start(&increment_task, &increment_thread, NULL);
-    rt_task_start(&decrement_task, &decrement_thread, NULL);
-
-    rt_task_join(&increment_task);
-    rt_task_join(&decrement_task);
-
-    printf("The final value of shared_variable is %d\n", shared_variable);
-
-    rt_sem_delete(&semaphore);
-
+    rt_sem_delete(&sem);
     return 0;
 }
