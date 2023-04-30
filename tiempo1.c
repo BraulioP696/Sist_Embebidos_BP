@@ -6,7 +6,6 @@
 
 RT_TASK tarea_hola;
 
-
 void mensaje (void *arg){
     RT_TASK_INFO infoTarea;
     printf("Hola mundo\n");
