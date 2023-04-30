@@ -8,7 +8,6 @@ EXECUTABLE := tiempo1
 
 all: $(EXECUTABLE)
 
-
 %: %.c
 		$(CC) -o $@ $< $(CFLAGS) $(LDFLAGS)
 
