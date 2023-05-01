@@ -21,6 +21,7 @@ int sem_id;
 void tareaUno(void *arg){
     int i;
     for(i=0; i <ITER; i++){
+        sleep(0.1)
         // ESPERAMOS EL SEMAFORO
         rt_sem_p(&sem, TM_NONBLOCK); 
         //IMPRESION VARIABLE INCREMENTADA
