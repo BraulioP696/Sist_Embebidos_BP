@@ -34,7 +34,7 @@ void tareaUno(void *arg){
 
 void tareaDos(void *arg){
     int i;
-    for(i=0; i  <ITER; i++){
+    for(i=0; i  <(ITER+1); i++){
         // ESPERAMOS EL SEMAFORO 
         rt_sem_p(&sem,TM_NONBLOCK);
         //IMPRESION VARIABLE INCREMENTADA
