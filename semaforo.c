@@ -34,7 +34,7 @@ void tareaUno(void *arg){
 
 void tareaDos(void *arg){
     int i;
-    for(i=0; i  <(ITER+1); i++){
+    for(i=0; i  <ITER; i++){
         // ESPERAMOS EL SEMAFORO 
         rt_sem_p(&sem,TM_INFINITE);
         //IMPRESION VARIABLE INCREMENTADA
@@ -67,7 +67,7 @@ int main(int argc, char* argv[]){ //ARGUMENTOS DE LA FUNCIÓN PRINCIPAL
     rt_task_join(&tarea1);
     rt_task_join(&tarea2);
 
-    printf("El valor final es: %d \n", global);
+    printf("\n El valor final es: %d \n", global);
 
     rt_sem_delete(&sem); //ELIMINAMOS EL SEMAFORO CREADO
 
