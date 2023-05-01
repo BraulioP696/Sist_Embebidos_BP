@@ -22,12 +22,11 @@ void tareaUno(void *arg){
     int i;
     for(i=0; i <ITER; i++){
         // ESPERAMOS EL SEMAFORO
-        rt_sem_p(&sem, TM_NONBLOCK); 
+        rt_sem_v(&sem);
         //IMPRESION VARIABLE INCREMENTADA
         printf("Tarea 11 la variable global es: %d \n",++global);
         //LIBERAMOS SEMAFORO
-        rt_sem_v(&sem);
-        sleep(0.1);
+        rt_sem_p(&sem, TM_NONBLOCK);
     }
 }
 
@@ -41,7 +40,6 @@ void tareaDos(void *arg){
         printf("Tarea 22 la variable global es: %d \n",--global);
         //LIBERAMOS SEMAFORO
         rt_sem_v(&sem);
-        sleep(0.1);
     }
 }
 
