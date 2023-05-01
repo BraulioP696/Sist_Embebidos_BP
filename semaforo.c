@@ -67,9 +67,7 @@ int main(int argc, char* argv[]){ //ARGUMENTOS DE LA FUNCIÓN PRINCIPAL
     rt_task_join(&tarea1);
     rt_task_join(&tarea2);
 
-    printf("\n El valor final es: %d \n", global);
-
     rt_sem_delete(&sem); //ELIMINAMOS EL SEMAFORO CREADO
-
+    printf("\n El valor final es: %d \n", global);
     return 0;
 }
