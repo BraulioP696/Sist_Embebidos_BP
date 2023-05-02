@@ -39,6 +39,7 @@ void tareaDos(void *arg){
         global -=1;
         printf("Tarea 22 la variable global es: %d \n",global);
         //LIBERAMOS SEMAFORO
+        rt_sem_v(&sem)
     }
 }
 
