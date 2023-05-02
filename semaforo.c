@@ -27,7 +27,7 @@ void tareaUno(void *arg){
         printf("Resultado de suma: %d \n",global);
         //LIBERAMOS SEMAFORO
         
-    }rt_sem_v(&sem);
+    }
 }
 
 
