@@ -26,7 +26,7 @@ void tareaUno(void *arg){
         global ++;   //SECCIÓN CRITICA
         printf("Resultado de suma: %d \n",global);
         //LIBERAMOS SEMAFORO
-        
+        rt_sem_p(&sem, TM_INFINITE);
     }
 }
 
