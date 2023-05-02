@@ -36,12 +36,11 @@ void tareaDos(void *arg){
     for(i=0; i  <ITER; i++){
         // ESPERAMOS EL SEMAFORO 
         rt_sem_v(&sem);
-        rt_sem_p(&sem, TM_INFINITE);
         //IMPRESION VARIABLE INCREMENTADA
         global --;
         printf("Resultado de resta: %d \n",global);
         //LIBERAMOS SEMAFORO
-        //rt_sem_p(&sem, TM_INFINITE);
+        rt_sem_p(&sem, TM_INFINITE);
     }
 }
 
