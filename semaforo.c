@@ -22,9 +22,10 @@ void tareaUno(void *arg){
     int i;
     for(i=0; i <ITER; i++){
         // BLOQUEO DE SEMAFORO
+        rt_sem_p(&sem, TM_INFINITE);
         global +=1;   //SECCIÓN CRITICA
         printf("Tarea 11 la variable global es: %d \n",global);
-        rt_sem_p(&sem, TM_INFINITE);
+        
         //LIBERAMOS SEMAFORO
         
     }
@@ -58,8 +59,8 @@ int main(int argc, char* argv[]){ //ARGUMENTOS DE LA FUNCIÓN PRINCIPAL
     sprintf(str1,"task_1"); sprintf(str2,"task_2");//COLOCAMOS NOMBRE A UN STRING
     rt_task_create(&tarea1, str1,0,10,0); //CREAMOS LA TAREA, DIRECCIÓN, NOMBRE DEL HILO, PRIORIDADES EN XENOMAI
     rt_task_create(&tarea2, str2,0,10,0); //CREAMOS LA TAREA, DIRECCIÓN, NOMBRE DEL HILO, PRIORIDADES EN XENOMAI
-    rt_task_start(&tarea1, &tareaUno,NULL); //INICIAMOS LA TAREA, DIRECCIÓN TAREA, FUNCIÓN A EJECUTAR, 0
-    rt_task_start(&tarea2, &tareaDos,NULL); //INICIAMOS LA TAREA, DIRECCIÓN TAREA, FUNCIÓN A EJECUTAR, 0
+    rt_task_start(&tarea1, &tareaUno,0); //INICIAMOS LA TAREA, DIRECCIÓN TAREA, FUNCIÓN A EJECUTAR, 0
+    rt_task_start(&tarea2, &tareaDos,0); //INICIAMOS LA TAREA, DIRECCIÓN TAREA, FUNCIÓN A EJECUTAR, 0
 
     //Esperamos que las tareas finalicen 
     rt_task_join(&tarea1);
