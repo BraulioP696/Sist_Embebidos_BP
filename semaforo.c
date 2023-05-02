@@ -22,9 +22,9 @@ void tareaUno(void *arg){
     int i;
     for(i=0; i <ITER; i++){
         // BLOQUEO DE SEMAFORO
-        rt_sem_p(&sem, TM_INFINITE);
         global +=1;   //SECCIÓN CRITICA
         printf("Tarea 11 la variable global es: %d \n",global);
+        rt_sem_p(&sem, TM_INFINITE);
         //LIBERAMOS SEMAFORO
         
     }
