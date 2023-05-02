@@ -40,7 +40,7 @@ void tareaDos(void *arg){
         global --;
         printf("Resultado de resta: %d \n",global);
         //LIBERAMOS SEMAFORO
-        rt_sem_p(&sem, TM_INFINITE);
+        //rt_sem_p(&sem, TM_INFINITE);
     }
 }
 
