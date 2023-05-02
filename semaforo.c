@@ -39,8 +39,8 @@ void tareaDos(void *arg){
         // ESPERAMOS EL SEMAFORO 
         
         //IMPRESION VARIABLE INCREMENTADA
-        global -=1;
         rt_sem_v(&sem);
+        global -=1;
         printf("Tarea 22 la variable global es: %d \n",global);
         //LIBERAMOS SEMAFORO
         
