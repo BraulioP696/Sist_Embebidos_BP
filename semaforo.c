@@ -35,7 +35,7 @@ void tareaDos(void *arg){
     int i;
     for(i=0; i  <ITER; i++){
         // ESPERAMOS EL SEMAFORO 
-        rt_sem_v(&sem);
+        //rt_sem_v(&sem);
         //IMPRESION VARIABLE INCREMENTADA
         global --;
         printf("Resultado de resta: %d \n",global);
