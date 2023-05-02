@@ -7,7 +7,7 @@
 #include <alchemy/sem.h>
 
 //DEFINIMOS EL NUMERO DE ITERACIONES POR TAREA
-#define ITER 15
+#define ITER 7
 
 //DEFINIMOS LAS TAREAS
 static RT_TASK tarea1, tarea2;
