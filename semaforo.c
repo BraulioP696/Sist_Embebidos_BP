@@ -25,7 +25,6 @@ void tareaUno(void *arg){
         rt_sem_p(&sem, TM_INFINITE);
         global ++;   //SECCIÓN CRITICA
         printf("Tarea 11 la variable global es: %d \n",global);
-        rt_sem_v(&sem);
         //LIBERAMOS SEMAFORO
         
     }
