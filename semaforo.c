@@ -13,7 +13,7 @@
 static RT_TASK tarea1, tarea2;
 
 int global = 0; //RECURSO COMPARTIDO
-
+int result =0;
 //DEFINIMOS SEMAFORO
 RT_SEM sem;
 int sem_id;
@@ -23,12 +23,18 @@ void tareaUno(void *arg){
     for(i=0; i <ITER; i++){
         // ESPERAMOS EL SEMAFORO
         
-        //IMPRESION VARIABLE INCREMENTADA
-        global +=1;   
-        rt_sem_p(&sem, TM_INFINITE);     
+        //IMPRESION VARIABLE INCREMENTADA  
+        result = rt_sem_p(&sem, TM_INFINITE);
+        if (result < 0) {
+            printf("Error waiting for semaphore: %s\n", strerror(-result));
+        }  
+        global +=1;   //SECCIÓN CRITICA
         printf("Tarea 11 la variable global es: %d \n",global);
         //LIBERAMOS SEMAFORO
-        rt_sem_v(&sem);
+        result=rt_sem_v(&sem);
+        if (result < 0) {
+            printf("Error releasing semaphore: %s\n", strerror(-result));
+        }   
     }
 }
 
