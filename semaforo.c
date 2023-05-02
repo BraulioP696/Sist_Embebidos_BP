@@ -27,7 +27,7 @@ void tareaUno(void *arg){
         printf("Resultado de suma: %d \n",global);
         //LIBERAMOS SEMAFORO
         
-    }
+    }rt_sem_v(&sem);
 }
 
 
@@ -35,13 +35,13 @@ void tareaDos(void *arg){
     int i;
     for(i=0; i  <ITER; i++){
         // ESPERAMOS EL SEMAFORO 
+        rt_sem_p(&sem, TM_INFINITE);
         //IMPRESION VARIABLE INCREMENTADA
-        
         global --;
         printf("Resultado de resta: %d \n",global);
         //LIBERAMOS SEMAFORO
-        rt_sem_v(&sem);
-    }
+        
+    }rt_sem_v(&sem);
 }
 
 int main(int argc, char* argv[]){ //ARGUMENTOS DE LA FUNCIÓN PRINCIPAL
